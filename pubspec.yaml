@@ -1,0 +1,52 @@
+name: fitness_tracker
+description: A comprehensive fitness tracking application for Android
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI Components
+  cupertino_icons: ^1.0.2
+  google_fonts: ^6.1.0
+  flutter_svg: ^2.0.9
+
+  # State Management
+  provider: ^6.1.1
+
+  # Local Database
+  sqflite: ^2.3.0
+  path_provider: ^2.1.1
+  path: ^1.8.3
+
+  # Charts & Analytics
+  fl_chart: ^0.65.0
+
+  # Date/Time
+  intl: ^0.18.1
+
+  # Image Picker (for progress photos)
+  image_picker: ^1.0.5
+
+  # Notifications
+  flutter_local_notifications: ^16.2.0
+
+  # Shared Preferences
+  shared_preferences: ^2.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+
+  # Assets
+  # assets:
+  #   - assets/images/
+  #   - assets/icons/
