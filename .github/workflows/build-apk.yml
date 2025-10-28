@@ -1,0 +1,67 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ "claude/draft-app-concept-011CUZ5HVTW4kjv4tcvdGsMV", "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.0'
+        channel: 'stable'
+
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Run Flutter doctor
+      run: flutter doctor -v
+
+    - name: Build APK (Debug)
+      run: flutter build apk --debug
+
+    - name: Build APK (Release)
+      run: flutter build apk --release --split-per-abi
+
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: fitness-tracker-debug
+        path: build/app/outputs/flutter-apk/app-debug.apk
+
+    - name: Upload Release APKs
+      uses: actions/upload-artifact@v4
+      with:
+        name: fitness-tracker-release
+        path: build/app/outputs/flutter-apk/app-*-release.apk
+
+    - name: Create Release Info
+      run: |
+        echo "# APK Build Info" > build-info.txt
+        echo "Build Date: $(date)" >> build-info.txt
+        echo "Flutter Version: $(flutter --version | head -n 1)" >> build-info.txt
+        echo "" >> build-info.txt
+        echo "## APK Files:" >> build-info.txt
+        ls -lh build/app/outputs/flutter-apk/*.apk >> build-info.txt
+
+    - name: Upload Build Info
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-info
+        path: build-info.txt
